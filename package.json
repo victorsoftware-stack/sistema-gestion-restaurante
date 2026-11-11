@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "dev:api": "node server/dev.js",
+    "dev:api": "node --watch server/dev.js",
     "dev:full": "concurrently \"npm run dev:api\" \"npm run dev\"",
     "build": "vite build",
     "preview": "vite preview",

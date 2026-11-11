@@ -95,3 +95,74 @@ export const menuApi = {
       method: 'DELETE',
     }),
 };
+
+export const tablesApi = {
+  list: () => apiRequest('/tables'),
+};
+
+export const ordersApi = {
+  listLive: () => apiRequest('/orders/live'),
+  list: (params = {}) => {
+    const query = new URLSearchParams();
+    if (params.status) query.set('status', params.status);
+    if (params.activeOnly) query.set('activeOnly', 'true');
+    const qs = query.toString();
+    return apiRequest(`/orders${qs ? `?${qs}` : ''}`);
+  },
+  create: (payload) =>
+    apiRequest('/orders', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  updateStatus: (id, status) =>
+    apiRequest(`/orders/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    }),
+};
+
+export const reservationsApi = {
+  checkAvailability: ({ date, time, party_size }) => {
+    const query = new URLSearchParams({ date });
+    if (time) query.set('time', time);
+    if (party_size) query.set('party_size', String(party_size));
+    return apiRequest(`/reservations/availability?${query.toString()}`);
+  },
+  list: (params = {}) => {
+    const query = new URLSearchParams();
+    if (params.date) query.set('date', params.date);
+    if (params.status) query.set('status', params.status);
+    const qs = query.toString();
+    return apiRequest(`/reservations${qs ? `?${qs}` : ''}`);
+  },
+  create: (payload) =>
+    apiRequest('/reservations', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  updateStatus: (id, status) =>
+    apiRequest(`/reservations/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    }),
+};
+
+export const billingApi = {
+  listInvoices: (date) => apiRequest(`/invoices${date ? `?date=${date}` : ''}`),
+  getInvoice: (id) => apiRequest(`/invoices/${id}`),
+  createInvoice: (payload) =>
+    apiRequest('/invoices', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  previewClosing: (date) =>
+    apiRequest(`/cash-closing/preview${date ? `?date=${date}` : ''}`),
+  listClosings: () => apiRequest('/cash-closing'),
+  createClosing: (payload) =>
+    apiRequest('/cash-closing', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  getDailyReport: (date) =>
+    apiRequest(`/reports/daily${date ? `?date=${date}` : ''}`),
+};

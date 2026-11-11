@@ -6,6 +6,7 @@
 sistema-gestion-restaurante/
 ├── api/                 # Endpoints serverless / API REST (Node.js)
 ├── docs/                # Documentación técnica, esquema SQL y manuales
+├── lib/                 # Capa de base de datos, esquema y utilidades compartidas
 ├── src/                 # Aplicación web frontend (React + Vite + Tailwind)
 │   ├── components/      # Componentes reutilizables de interfaz
 │   ├── context/         # Estado global de sesión y notificaciones

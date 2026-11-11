@@ -1,0 +1,24 @@
+# Dependencias y build
+node_modules/
+dist/
+coverage/
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# Bases de datos locales
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# Logs y temporales
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Vercel
+.vercel/

@@ -4,9 +4,10 @@
 
 ```text
 sistema-gestion-restaurante/
-├── api/                 # Endpoints serverless / API REST (Node.js)
+├── api/                 # Punto de entrada Serverless para Vercel
 ├── docs/                # Documentación técnica, esquema SQL y manuales
-├── lib/                 # Capa de base de datos, esquema y utilidades compartidas
+├── lib/                 # Capa de base de datos, esquema, autenticación y utilidades
+├── server/              # Aplicación Express, rutas REST y servidor de desarrollo local
 ├── src/                 # Aplicación web frontend (React + Vite + Tailwind)
 │   ├── components/      # Componentes reutilizables de interfaz
 │   ├── context/         # Estado global de sesión y notificaciones

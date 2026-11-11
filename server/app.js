@@ -1,6 +1,8 @@
 import express from 'express';
 import { initializeDatabase } from '../lib/db.js';
 import authRouter from './routes/auth.js';
+import categoriesRouter from './routes/categories.js';
+import dishesRouter from './routes/dishes.js';
 
 /**
  * Crea y configura la aplicación Express de SIGR.
@@ -28,6 +30,8 @@ export function createApp() {
   });
 
   app.use('/api/auth', authRouter);
+  app.use('/api/categories', categoriesRouter);
+  app.use('/api/dishes', dishesRouter);
 
   app.use('/api', (_req, res) => {
     res.status(404).json({ error: 'Ruta de API no encontrada.' });

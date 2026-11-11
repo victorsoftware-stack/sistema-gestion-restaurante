@@ -4,11 +4,11 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { formatCurrency, menuApi, ordersApi, tablesApi } from '../services/api.js';
 
 const STATUS_META = {
-  pendiente: { label: 'Pendiente', badge: 'bg-amber-100 text-amber-800' },
-  en_preparacion: { label: 'En preparación', badge: 'bg-blue-100 text-blue-800' },
-  listo: { label: 'Listo', badge: 'bg-emerald-100 text-emerald-800' },
-  entregado: { label: 'Entregado', badge: 'bg-slate-200 text-slate-800' },
-  pagado: { label: 'Pagado', badge: 'bg-indigo-100 text-indigo-800' },
+  pendiente: { label: 'Pendiente', badge: 'bg-yellow-100 text-yellow-900 border border-yellow-200' },
+  en_preparacion: { label: 'En preparación', badge: 'bg-orange-100 text-orange-800 border border-orange-200' },
+  listo: { label: 'Listo', badge: 'bg-emerald-100 text-emerald-800 border border-emerald-200' },
+  entregado: { label: 'Entregado', badge: 'bg-amber-100 text-amber-900 border border-amber-200' },
+  pagado: { label: 'Pagado', badge: 'bg-amber-200 text-orange-950' },
   cancelado: { label: 'Cancelado', badge: 'bg-rose-100 text-rose-800' },
 };
 
@@ -180,11 +180,11 @@ export default function OrdersPage() {
       <div className="grid lg:grid-cols-5 gap-6">
         <form
           onSubmit={handleCreateOrder}
-          className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-5 space-y-4 h-fit"
+          className="lg:col-span-2 bg-white rounded-2xl border border-amber-200 p-5 space-y-4 h-fit shadow-sm"
         >
           <div className="flex items-center gap-2">
-            <ShoppingBag className="w-5 h-5 text-indigo-600" />
-            <h2 className="font-semibold text-slate-900">Nuevo Pedido</h2>
+            <ShoppingBag className="w-5 h-5 text-orange-600" />
+            <h2 className="font-semibold text-stone-900">Nuevo Pedido</h2>
           </div>
 
           <div>
@@ -226,11 +226,20 @@ export default function OrdersPage() {
               return (
                 <div
                   key={dish.id}
-                  className="flex items-center justify-between gap-2 p-2.5 rounded-xl border border-slate-200"
+                  className="flex items-center justify-between gap-2 p-2.5 rounded-xl border border-amber-200/80 bg-amber-50/30"
                 >
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-slate-900 truncate">{dish.name}</p>
-                    <p className="text-xs text-slate-500">{formatCurrency(dish.price)}</p>
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    {dish.image_url && (
+                      <img
+                        src={dish.image_url}
+                        alt={dish.name}
+                        className="w-10 h-10 rounded-lg object-cover shrink-0 border border-amber-200"
+                      />
+                    )}
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-stone-900 truncate">{dish.name}</p>
+                      <p className="text-xs text-orange-700 font-semibold">{formatCurrency(dish.price)}</p>
+                    </div>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">
                     <button
@@ -263,7 +272,7 @@ export default function OrdersPage() {
           <button
             type="submit"
             disabled={submitting || cartItems.length === 0}
-            className="w-full py-2.5 rounded-lg bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 disabled:opacity-50"
+            className="w-full py-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 text-white text-sm font-semibold hover:from-amber-600 hover:to-orange-700 disabled:opacity-50 shadow-sm"
           >
             {submitting ? 'Enviando...' : 'Registrar Pedido'}
           </button>
@@ -328,7 +337,7 @@ export default function OrdersPage() {
                             className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${
                               act.danger
                                 ? 'border border-rose-200 text-rose-700 hover:bg-rose-50'
-                                : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                                : 'bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700'
                             }`}
                           >
                             {act.label}

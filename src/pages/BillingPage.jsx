@@ -155,11 +155,11 @@ export default function BillingPage() {
       )}
 
       <div className="grid lg:grid-cols-2 gap-6">
-        <section className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
+        <section className="bg-white rounded-2xl border border-amber-200 p-5 space-y-4 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <ReceiptText className="w-5 h-5 text-indigo-600" />
-              <h2 className="font-semibold text-slate-900">Pedidos Pendientes de Facturación</h2>
+              <ReceiptText className="w-5 h-5 text-orange-600" />
+              <h2 className="font-semibold text-stone-900">Pedidos Pendientes de Facturación</h2>
             </div>
             <select
               value={taxRate}
@@ -206,7 +206,7 @@ export default function BillingPage() {
                     <button
                       type="button"
                       onClick={() => handleEmitInvoice(order.id)}
-                      className="px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700"
+                      className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-semibold hover:from-amber-600 hover:to-orange-700"
                     >
                       Facturar
                     </button>
@@ -239,10 +239,10 @@ export default function BillingPage() {
           )}
         </section>
 
-        <section className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
+        <section className="bg-white rounded-2xl border border-amber-200 p-5 space-y-4 shadow-sm">
           <div className="flex items-center gap-2">
-            <Lock className="w-5 h-5 text-indigo-600" />
-            <h2 className="font-semibold text-slate-900">Cierre de Caja ({reportDate})</h2>
+            <Lock className="w-5 h-5 text-orange-600" />
+            <h2 className="font-semibold text-stone-900">Cierre de Caja ({reportDate})</h2>
           </div>
 
           {preview && (
@@ -299,7 +299,7 @@ export default function BillingPage() {
               </div>
               <button
                 type="submit"
-                className="w-full py-2.5 rounded-lg bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800"
+                className="w-full py-2.5 rounded-lg bg-orange-900 text-amber-50 text-sm font-semibold hover:bg-orange-950"
               >
                 Ejecutar Cierre de Caja
               </button>
@@ -308,8 +308,8 @@ export default function BillingPage() {
 
           {dailyReport?.top_dishes?.length > 0 && (
             <div className="pt-3 border-t border-slate-200 space-y-2">
-              <div className="flex items-center gap-1.5 text-sm font-semibold text-slate-900">
-                <BarChart3 className="w-4 h-4 text-indigo-600" />
+              <div className="flex items-center gap-1.5 text-sm font-semibold text-stone-900">
+                <BarChart3 className="w-4 h-4 text-orange-600" />
                 <span>Platos más vendidos ({reportDate})</span>
               </div>
               <ul className="space-y-1 text-sm">

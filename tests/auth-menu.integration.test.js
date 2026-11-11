@@ -27,6 +27,7 @@ describe('SIGR Integration — Autenticación y Menú Digital', () => {
 
     expect(cats.body.categories).toHaveLength(4);
     expect(dishes.body.dishes).toHaveLength(8);
+    expect(dishes.body.dishes.every((d) => d.image_url.startsWith('/images/dishes/'))).toBe(true);
     expect(tables.body.tables).toHaveLength(6);
   });
 

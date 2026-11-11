@@ -13,6 +13,7 @@ const DISH_SELECT = `
     d.name,
     d.description,
     d.price,
+    d.image_url,
     d.available,
     d.created_at
   FROM dishes d
@@ -27,6 +28,7 @@ function mapDish(row) {
     name: row.name,
     description: row.description,
     price: Number(row.price),
+    image_url: row.image_url || '',
     available: Boolean(Number(row.available)),
     created_at: row.created_at,
   };
@@ -104,6 +106,7 @@ router.post('/', authenticate, requireRole('administrador'), async (req, res, ne
     const name = String(req.body?.name || '').trim();
     const description = String(req.body?.description || '').trim();
     const price = Number(req.body?.price);
+    const imageUrl = String(req.body?.image_url || '').trim();
     const available = req.body?.available === undefined ? 1 : req.body.available ? 1 : 0;
 
     if (!categoryId) {
@@ -126,8 +129,8 @@ router.post('/', authenticate, requireRole('administrador'), async (req, res, ne
     }
 
     const insertResult = await db.execute({
-      sql: 'INSERT INTO dishes (category_id, name, description, price, available) VALUES (?, ?, ?, ?, ?)',
-      args: [categoryId, name, description, price, available],
+      sql: 'INSERT INTO dishes (category_id, name, description, price, image_url, available) VALUES (?, ?, ?, ?, ?, ?)',
+      args: [categoryId, name, description, price, imageUrl, available],
     });
 
     const created = await db.execute({
@@ -152,7 +155,7 @@ router.put('/:id', authenticate, requireRole('administrador'), async (req, res, 
 
     const db = getDb();
     const currentRes = await db.execute({
-      sql: 'SELECT id, category_id, name, description, price, available FROM dishes WHERE id = ?',
+      sql: 'SELECT id, category_id, name, description, price, image_url, available FROM dishes WHERE id = ?',
       args: [id],
     });
     if (currentRes.rows.length === 0) {
@@ -166,6 +169,8 @@ router.put('/:id', authenticate, requireRole('administrador'), async (req, res, 
     const description =
       req.body?.description !== undefined ? String(req.body.description).trim() : current.description;
     const price = req.body?.price !== undefined ? Number(req.body.price) : Number(current.price);
+    const imageUrl =
+      req.body?.image_url !== undefined ? String(req.body.image_url).trim() : current.image_url;
     const available = req.body?.available !== undefined ? (req.body.available ? 1 : 0) : Number(current.available);
 
     if (!categoryId) {
@@ -187,8 +192,8 @@ router.put('/:id', authenticate, requireRole('administrador'), async (req, res, 
     }
 
     await db.execute({
-      sql: 'UPDATE dishes SET category_id = ?, name = ?, description = ?, price = ?, available = ? WHERE id = ?',
-      args: [categoryId, name, description, price, available, id],
+      sql: 'UPDATE dishes SET category_id = ?, name = ?, description = ?, price = ?, image_url = ?, available = ? WHERE id = ?',
+      args: [categoryId, name, description, price, imageUrl, available, id],
     });
 
     const updated = await db.execute({

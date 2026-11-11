@@ -1,6 +1,19 @@
-# Historial de Cambios — SIGR
+# Historial de Cambios
 
-Todos los cambios relevantes hasta el establecimiento de la línea base inicial del **Sistema Integral de Gestión de Restaurante (SIGR)** se documentan en este archivo.
+Todos los cambios relevantes del **Sistema Integral de Gestión de Restaurante** se documentan cronológicamente en este archivo.
+
+## [1.1.0] - 2026-11-11
+
+### Cambiado y Añadido (Cierre Final del Proyecto)
+- **Identidad visual cálida (amarillo y naranja)**:
+  - Renovación completa de la paleta de colores en `index.html`, `src/App.jsx`, `src/components/Navbar.jsx`, `src/pages/AuthPage.jsx`, `src/pages/MenuPage.jsx`, `src/pages/OrdersPage.jsx`, `src/pages/ReservationsPage.jsx` y `src/pages/BillingPage.jsx`.
+- **Imágenes de productos en catálogo y pedidos**:
+  - Agregada columna `image_url` en la tabla `dishes` (`lib/schema.js`, `docs/database_schema.sql`, `server/routes/dishes.js`) con migración automática para bases existentes en `lib/db.js`.
+  - Incorporadas 8 fotografías locales en `public/images/dishes/` (`empanadas-criollas.jpg`, `patacones-hogao.jpg`, `bandeja-tipica.jpg`, `trucha-ajillo.jpg`, `pechuga-plancha.jpg`, `limonada-coco.jpg`, `jugo-natural.jpg`, `postre-tres-leches.jpg`), campo editable de imagen en el CRUD y miniaturas en pedidos.
+- **Actualización de marca en interfaz**:
+  - Retirada la sigla visible anterior en títulos, barra superior, encabezado del menú, login y nombre de platos/usuarios visibles (`Bandeja Típica`, `Restaurante · Sistema de Gestión`).
+- **Documentación de ingeniería en `README.md`**:
+  - Ampliado con arquitectura en capas, estructura completa del proyecto, modelo relacional, matriz RBAC, contrato completo de los endpoints REST, máquinas de estado, pruebas, scripts y despliegue.
 
 ## [1.0.0-baseline] - 2026-11-11
 

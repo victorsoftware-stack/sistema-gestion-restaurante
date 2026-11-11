@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS dishes (
   name TEXT NOT NULL,
   description TEXT NOT NULL DEFAULT '',
   price REAL NOT NULL CHECK (price >= 0),
+  image_url TEXT NOT NULL DEFAULT '',
   available INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );

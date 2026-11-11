@@ -50,26 +50,26 @@ export default function AuthPage({ onSuccess }) {
 
   return (
     <div className="max-w-md mx-auto py-8">
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
+      <div className="bg-white rounded-2xl border border-amber-200 shadow-sm p-6 sm:p-8">
         <div className="flex items-center gap-2.5 mb-2">
-          <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600">
+          <div className="p-2 rounded-xl bg-amber-100 text-orange-600">
             {mode === 'login' ? (
               <ShieldCheck className="w-5 h-5" />
             ) : (
               <UserPlus className="w-5 h-5" />
             )}
           </div>
-          <h1 className="text-xl font-bold text-slate-900">
-            {mode === 'login' ? 'Iniciar sesión en SIGR' : 'Registro de Cliente'}
+          <h1 className="text-xl font-bold text-stone-900">
+            {mode === 'login' ? 'Iniciar sesión' : 'Registro de Cliente'}
           </h1>
         </div>
-        <p className="text-sm text-slate-600 mb-6">
+        <p className="text-sm text-stone-600 mb-6">
           {mode === 'login'
             ? 'Accede según tu rol asignado (cliente, mesero o administrador).'
             : 'Crea una cuenta para realizar pedidos y reservar mesas.'}
         </p>
 
-        <div className="grid grid-cols-2 gap-1 p-1 bg-slate-100 rounded-xl mb-6">
+        <div className="grid grid-cols-2 gap-1 p-1 bg-amber-50 border border-amber-200 rounded-xl mb-6">
           <button
             type="button"
             onClick={() => {
@@ -77,7 +77,9 @@ export default function AuthPage({ onSuccess }) {
               setError('');
             }}
             className={`py-2 text-sm font-medium rounded-lg transition-colors ${
-              mode === 'login' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600'
+              mode === 'login'
+                ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-sm'
+                : 'text-stone-700 hover:text-orange-800'
             }`}
           >
             Ingresar
@@ -89,7 +91,9 @@ export default function AuthPage({ onSuccess }) {
               setError('');
             }}
             className={`py-2 text-sm font-medium rounded-lg transition-colors ${
-              mode === 'register' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600'
+              mode === 'register'
+                ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-sm'
+                : 'text-stone-700 hover:text-orange-800'
             }`}
           >
             Registrarse
@@ -105,7 +109,7 @@ export default function AuthPage({ onSuccess }) {
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === 'register' && (
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-stone-700 mb-1">
                 Nombre completo
               </label>
               <input
@@ -115,13 +119,13 @@ export default function AuthPage({ onSuccess }) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Ej. Laura Martínez"
-                className="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3.5 py-2 rounded-lg border border-amber-200 focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-stone-700 mb-1">
               Correo electrónico
             </label>
             <input
@@ -130,12 +134,12 @@ export default function AuthPage({ onSuccess }) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="correo@ejemplo.com"
-              className="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3.5 py-2 rounded-lg border border-amber-200 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-stone-700 mb-1">
               Contraseña
             </label>
             <input
@@ -145,14 +149,14 @@ export default function AuthPage({ onSuccess }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Mínimo 6 caracteres"
-              className="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3.5 py-2 rounded-lg border border-amber-200 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-2.5 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 disabled:opacity-60"
+            className="w-full py-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold hover:from-amber-600 hover:to-orange-700 disabled:opacity-60 shadow-sm"
           >
             {submitting
               ? 'Procesando...'
@@ -163,8 +167,8 @@ export default function AuthPage({ onSuccess }) {
         </form>
 
         {mode === 'login' && (
-          <div className="mt-6 pt-5 border-t border-slate-200">
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-2.5">
+          <div className="mt-6 pt-5 border-t border-amber-100">
+            <p className="text-xs font-medium text-stone-500 uppercase tracking-wide mb-2.5">
               Acceso rápido de demostración
             </p>
             <div className="grid grid-cols-3 gap-2">
@@ -174,7 +178,7 @@ export default function AuthPage({ onSuccess }) {
                   type="button"
                   disabled={submitting}
                   onClick={() => handleDemoLogin(demo)}
-                  className="px-2.5 py-2 rounded-lg border border-slate-200 bg-slate-50 hover:bg-indigo-50 hover:border-indigo-200 text-xs font-medium text-slate-700"
+                  className="px-2.5 py-2 rounded-lg border border-amber-200 bg-amber-50/70 hover:bg-orange-100 hover:border-orange-300 text-xs font-semibold text-orange-900"
                 >
                   {demo.label}
                 </button>

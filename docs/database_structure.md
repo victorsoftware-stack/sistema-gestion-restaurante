@@ -13,7 +13,7 @@ El sistema utiliza **SQLite / LibSQL** mediante `@libsql/client`, lo que permite
 | :--- | :--- | :--- |
 | `users` | Autenticación | Almacena usuarios con `email` único, `password_hash` y `role` restringido a `cliente`, `mesero` o `administrador`. |
 | `categories` | Menú Digital | Agrupaciones del menú con nombre único, orden de visualización (`display_order`) y estado `active`. |
-| `dishes` | Menú Digital | Platos vinculados a `categories` (`ON DELETE RESTRICT`), precio no negativo (`price >= 0`) y disponibilidad. |
+| `dishes` | Menú Digital | Platos vinculados a `categories` (`ON DELETE RESTRICT`), precio no negativo (`price >= 0`), ruta/URL de imagen (`image_url`) y disponibilidad. |
 | `restaurant_tables` | Pedidos y Reservas | Mesas físicas numeradas (`table_number` único), capacidad mínima > 0 y estado operativo (`disponible`, `ocupada`, `reservada`). |
 | `orders` | Pedidos | Comandas asociadas opcionalmente a mesa, cliente y mesero; ciclo de vida controlado por `CHECK` (`pendiente`, `en_preparacion`, `listo`, `entregado`, `pagado`, `cancelado`). |
 | `order_items` | Pedidos | Líneas de pedido dependientes de `orders` (`ON DELETE CASCADE`) con snapshot de nombre y precio unitario. |

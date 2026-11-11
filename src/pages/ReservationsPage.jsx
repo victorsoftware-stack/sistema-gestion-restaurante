@@ -5,7 +5,7 @@ import { reservationsApi } from '../services/api.js';
 
 const RESERVATION_BADGES = {
   confirmada: 'bg-emerald-100 text-emerald-800',
-  completada: 'bg-indigo-100 text-indigo-800',
+  completada: 'bg-amber-100 text-orange-900',
   cancelada: 'bg-rose-100 text-rose-800',
 };
 
@@ -126,11 +126,11 @@ export default function ReservationsPage() {
       <div className="grid lg:grid-cols-5 gap-6">
         <form
           onSubmit={handleCreateReservation}
-          className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-5 space-y-4 h-fit"
+          className="lg:col-span-2 bg-white rounded-2xl border border-amber-200 p-5 space-y-4 h-fit shadow-sm"
         >
           <div className="flex items-center gap-2">
-            <CalendarCheck2 className="w-5 h-5 text-indigo-600" />
-            <h2 className="font-semibold text-slate-900">Programar Reserva</h2>
+            <CalendarCheck2 className="w-5 h-5 text-orange-600" />
+            <h2 className="font-semibold text-stone-900">Programar Reserva</h2>
           </div>
 
           <div className="grid grid-cols-3 gap-3">
@@ -183,8 +183,8 @@ export default function ReservationsPage() {
                     !t.available
                       ? 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed'
                       : selectedTableId === String(t.id)
-                      ? 'bg-indigo-50 border-indigo-500 text-indigo-900'
-                      : 'bg-white border-slate-200 hover:bg-slate-50'
+                      ? 'bg-amber-50 border-orange-500 text-orange-950'
+                      : 'bg-white border-amber-200 hover:bg-amber-50/50'
                   }`}
                 >
                   <span className="font-semibold block">Mesa {t.table_number}</span>
@@ -234,7 +234,7 @@ export default function ReservationsPage() {
           <button
             type="submit"
             disabled={!selectedTableId}
-            className="w-full py-2.5 rounded-lg bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 disabled:opacity-50"
+            className="w-full py-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 text-white text-sm font-semibold hover:from-amber-600 hover:to-orange-700 disabled:opacity-50 shadow-sm"
           >
             Confirmar Reserva
           </button>
@@ -290,7 +290,7 @@ export default function ReservationsPage() {
                         <button
                           type="button"
                           onClick={() => handleStatusChange(resv.id, 'completada')}
-                          className="px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700"
+                          className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-semibold hover:from-amber-600 hover:to-orange-700"
                         >
                           Completar
                         </button>

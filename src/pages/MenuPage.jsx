@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FolderPlus, Pencil, Plus, Search, Trash2 } from 'lucide-react';
+import { FolderPlus, Pencil, Plus, Search, Trash2, UtensilsCrossed } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { formatCurrency, menuApi } from '../services/api.js';
 
@@ -9,8 +9,53 @@ const EMPTY_DISH_FORM = {
   name: '',
   description: '',
   price: '',
+  image_url: '',
   available: true,
 };
+
+function DishImage({ dish }) {
+  const [imgError, setImgError] = useState(false);
+
+  useEffect(() => {
+    setImgError(false);
+  }, [dish.image_url]);
+
+  const hasImage = Boolean(dish.image_url) && !imgError;
+
+  return (
+    <div className="relative h-44 w-full bg-gradient-to-br from-amber-100 via-yellow-100 to-orange-100 overflow-hidden">
+      {hasImage ? (
+        <img
+          src={dish.image_url}
+          alt={dish.name}
+          loading="lazy"
+          onError={() => setImgError(true)}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      ) : (
+        <div className="w-full h-full flex flex-col items-center justify-center text-orange-500/80 gap-1.5">
+          <UtensilsCrossed className="w-9 h-9" />
+          <span className="text-xs font-medium text-orange-700">{dish.category_name}</span>
+        </div>
+      )}
+
+      <div className="absolute inset-x-0 top-0 p-3 flex items-center justify-between gap-2 bg-gradient-to-b from-black/35 to-transparent">
+        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-400 text-stone-900 shadow-sm">
+          {dish.category_name}
+        </span>
+        <span
+          className={`text-xs font-semibold px-2.5 py-0.5 rounded-full shadow-sm ${
+            dish.available
+              ? 'bg-emerald-500 text-white'
+              : 'bg-rose-600 text-white'
+          }`}
+        >
+          {dish.available ? 'Disponible' : 'Agotado'}
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export default function MenuPage() {
   const { user } = useAuth();
@@ -66,6 +111,7 @@ export default function MenuPage() {
       name: dish.name,
       description: dish.description || '',
       price: String(dish.price),
+      image_url: dish.image_url || '',
       available: dish.available,
     });
     setShowDishForm(true);
@@ -81,6 +127,7 @@ export default function MenuPage() {
         name: dishForm.name.trim(),
         description: dishForm.description.trim(),
         price: Number(dishForm.price),
+        image_url: dishForm.image_url.trim(),
         available: dishForm.available,
       };
       if (dishForm.id) {
@@ -140,11 +187,11 @@ export default function MenuPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="rounded-2xl bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 p-6 text-white shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Menú Digital</h1>
-          <p className="text-sm text-slate-600">
-            Catálogo de platos, categorías y disponibilidad en tiempo real.
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Menú Digital</h1>
+          <p className="text-sm text-amber-50 mt-1">
+            Platos típicos, bebidas frescas y postres artesanales con disponibilidad en tiempo real.
           </p>
         </div>
 
@@ -156,7 +203,7 @@ export default function MenuPage() {
                 setShowCategoryForm((v) => !v);
                 setShowDishForm(false);
               }}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-white/95 text-orange-900 text-sm font-semibold hover:bg-white shadow-sm"
             >
               <FolderPlus className="w-4 h-4" />
               <span>Nueva categoría</span>
@@ -164,7 +211,7 @@ export default function MenuPage() {
             <button
               type="button"
               onClick={openNewDish}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-orange-900 text-amber-50 text-sm font-semibold hover:bg-orange-950 shadow-sm"
             >
               <Plus className="w-4 h-4" />
               <span>Nuevo plato</span>
@@ -188,9 +235,9 @@ export default function MenuPage() {
       {showCategoryForm && isAdmin && (
         <form
           onSubmit={handleCreateCategory}
-          className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4"
+          className="bg-white rounded-2xl border border-amber-200 p-5 space-y-4 shadow-sm"
         >
-          <h2 className="font-semibold text-slate-900">Crear categoría</h2>
+          <h2 className="font-semibold text-stone-900">Crear categoría</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <input
               type="text"
@@ -199,27 +246,27 @@ export default function MenuPage() {
               value={categoryName}
               onChange={(e) => setCategoryName(e.target.value)}
               placeholder="Nombre de la categoría"
-              className="px-3.5 py-2 rounded-lg border border-slate-300"
+              className="px-3.5 py-2 rounded-lg border border-amber-200 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
             <input
               type="text"
               value={categoryDesc}
               onChange={(e) => setCategoryDesc(e.target.value)}
               placeholder="Descripción breve (opcional)"
-              className="px-3.5 py-2 rounded-lg border border-slate-300"
+              className="px-3.5 py-2 rounded-lg border border-amber-200 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
           <div className="flex gap-2 justify-end">
             <button
               type="button"
               onClick={() => setShowCategoryForm(false)}
-              className="px-3.5 py-2 rounded-lg border border-slate-300 text-sm text-slate-700"
+              className="px-3.5 py-2 rounded-lg border border-amber-200 text-sm text-stone-700 hover:bg-amber-50"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium"
+              className="px-4 py-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 text-white text-sm font-semibold"
             >
               Guardar categoría
             </button>
@@ -230,9 +277,9 @@ export default function MenuPage() {
       {showDishForm && isAdmin && (
         <form
           onSubmit={handleSaveDish}
-          className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4"
+          className="bg-white rounded-2xl border border-amber-200 p-5 space-y-4 shadow-sm"
         >
-          <h2 className="font-semibold text-slate-900">
+          <h2 className="font-semibold text-stone-900">
             {dishForm.id ? 'Editar plato' : 'Agregar plato al menú'}
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -240,7 +287,7 @@ export default function MenuPage() {
               required
               value={dishForm.category_id}
               onChange={(e) => setDishForm({ ...dishForm, category_id: e.target.value })}
-              className="px-3.5 py-2 rounded-lg border border-slate-300 bg-white"
+              className="px-3.5 py-2 rounded-lg border border-amber-200 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500"
             >
               <option value="">Selecciona categoría</option>
               {categories.map((c) => (
@@ -256,7 +303,7 @@ export default function MenuPage() {
               value={dishForm.name}
               onChange={(e) => setDishForm({ ...dishForm, name: e.target.value })}
               placeholder="Nombre del plato"
-              className="px-3.5 py-2 rounded-lg border border-slate-300"
+              className="px-3.5 py-2 rounded-lg border border-amber-200 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
             <input
               type="number"
@@ -266,36 +313,45 @@ export default function MenuPage() {
               value={dishForm.price}
               onChange={(e) => setDishForm({ ...dishForm, price: e.target.value })}
               placeholder="Precio (COP)"
-              className="px-3.5 py-2 rounded-lg border border-slate-300"
+              className="px-3.5 py-2 rounded-lg border border-amber-200 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
-            <label className="flex items-center gap-2 text-sm text-slate-700 px-2">
+            <label className="flex items-center gap-2 text-sm text-stone-700 px-2">
               <input
                 type="checkbox"
                 checked={dishForm.available}
                 onChange={(e) => setDishForm({ ...dishForm, available: e.target.checked })}
-                className="rounded border-slate-300"
+                className="rounded border-amber-300 text-orange-600 focus:ring-orange-500"
               />
               <span>Disponible para pedidos</span>
             </label>
           </div>
-          <input
-            type="text"
-            value={dishForm.description}
-            onChange={(e) => setDishForm({ ...dishForm, description: e.target.value })}
-            placeholder="Descripción / ingredientes"
-            className="w-full px-3.5 py-2 rounded-lg border border-slate-300"
-          />
+          <div className="grid sm:grid-cols-2 gap-4">
+            <input
+              type="text"
+              value={dishForm.description}
+              onChange={(e) => setDishForm({ ...dishForm, description: e.target.value })}
+              placeholder="Descripción / ingredientes"
+              className="w-full px-3.5 py-2 rounded-lg border border-amber-200 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
+            <input
+              type="text"
+              value={dishForm.image_url}
+              onChange={(e) => setDishForm({ ...dishForm, image_url: e.target.value })}
+              placeholder="URL o ruta de imagen (ej. /images/dishes/bandeja-tipica.jpg)"
+              className="w-full px-3.5 py-2 rounded-lg border border-amber-200 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
+          </div>
           <div className="flex gap-2 justify-end">
             <button
               type="button"
               onClick={() => setShowDishForm(false)}
-              className="px-3.5 py-2 rounded-lg border border-slate-300 text-sm text-slate-700"
+              className="px-3.5 py-2 rounded-lg border border-amber-200 text-sm text-stone-700 hover:bg-amber-50"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium"
+              className="px-4 py-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 text-white text-sm font-semibold"
             >
               {dishForm.id ? 'Actualizar plato' : 'Crear plato'}
             </button>
@@ -308,10 +364,10 @@ export default function MenuPage() {
           <button
             type="button"
             onClick={() => setSelectedCategory('')}
-            className={`px-3.5 py-1.5 rounded-full text-sm font-medium whitespace-nowrap ${
+            className={`px-3.5 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
               selectedCategory === ''
-                ? 'bg-slate-900 text-white'
-                : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
+                ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-sm'
+                : 'bg-white border border-amber-200 text-stone-700 hover:bg-amber-50'
             }`}
           >
             Todas
@@ -321,10 +377,10 @@ export default function MenuPage() {
               key={cat.id}
               type="button"
               onClick={() => setSelectedCategory(String(cat.id))}
-              className={`px-3.5 py-1.5 rounded-full text-sm font-medium whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
                 selectedCategory === String(cat.id)
-                  ? 'bg-slate-900 text-white'
-                  : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
+                  ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-sm'
+                  : 'bg-white border border-amber-200 text-stone-700 hover:bg-amber-50'
               }`}
             >
               {cat.name}
@@ -333,55 +389,44 @@ export default function MenuPage() {
         </div>
 
         <div className="relative w-full md:w-72">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-orange-500 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar plato..."
-            className="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 bg-white text-sm"
+            className="w-full pl-9 pr-3 py-2 rounded-lg border border-amber-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
         </div>
       </div>
 
       {loading ? (
-        <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-500">
+        <div className="bg-white rounded-2xl border border-amber-200 p-8 text-center text-stone-500">
           Cargando catálogo del menú...
         </div>
       ) : dishes.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-500">
+        <div className="bg-white rounded-2xl border border-amber-200 p-8 text-center text-stone-500">
           No se encontraron platos con el filtro aplicado.
         </div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {dishes.map((dish) => (
             <article
               key={dish.id}
-              className="bg-white rounded-2xl border border-slate-200 p-5 flex flex-col justify-between gap-4"
+              className="group bg-white rounded-2xl border border-amber-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700">
-                    {dish.category_name}
-                  </span>
-                  <span
-                    className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${
-                      dish.available
-                        ? 'bg-emerald-50 text-emerald-700'
-                        : 'bg-rose-50 text-rose-700'
-                    }`}
-                  >
-                    {dish.available ? 'Disponible' : 'Agotado'}
-                  </span>
+                <DishImage dish={dish} />
+                <div className="p-5 pb-3">
+                  <h3 className="font-bold text-lg text-stone-900">{dish.name}</h3>
+                  <p className="text-sm text-stone-600 mt-1">
+                    {dish.description || 'Preparación tradicional de la casa.'}
+                  </p>
                 </div>
-                <h3 className="font-semibold text-lg text-slate-900">{dish.name}</h3>
-                <p className="text-sm text-slate-600 mt-1">
-                  {dish.description || 'Preparación tradicional de la casa.'}
-                </p>
               </div>
 
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
-                <span className="text-lg font-bold text-slate-900">
+              <div className="px-5 py-3.5 bg-amber-50/50 border-t border-amber-100 flex items-center justify-between gap-2">
+                <span className="text-lg font-extrabold text-orange-700">
                   {formatCurrency(dish.price)}
                 </span>
 
@@ -390,7 +435,7 @@ export default function MenuPage() {
                     <button
                       type="button"
                       onClick={() => handleToggleAvailability(dish)}
-                      className="px-2.5 py-1 rounded-lg border border-slate-200 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                      className="px-2.5 py-1 rounded-lg border border-amber-300 bg-white text-xs font-semibold text-orange-900 hover:bg-amber-50"
                     >
                       {dish.available ? 'Agotar' : 'Habilitar'}
                     </button>
@@ -401,7 +446,7 @@ export default function MenuPage() {
                         type="button"
                         onClick={() => openEditDish(dish)}
                         aria-label={`Editar ${dish.name}`}
-                        className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50"
+                        className="p-1.5 rounded-lg border border-amber-200 bg-white text-stone-600 hover:bg-amber-50"
                       >
                         <Pencil className="w-4 h-4" />
                       </button>
@@ -409,7 +454,7 @@ export default function MenuPage() {
                         type="button"
                         onClick={() => handleDeleteDish(dish)}
                         aria-label={`Eliminar ${dish.name}`}
-                        className="p-1.5 rounded-lg border border-rose-200 text-rose-600 hover:bg-rose-50"
+                        className="p-1.5 rounded-lg border border-rose-200 bg-white text-rose-600 hover:bg-rose-50"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>

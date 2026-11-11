@@ -7,6 +7,7 @@ sistema-gestion-restaurante/
 ├── api/                 # Punto de entrada Serverless para Vercel
 ├── docs/                # Documentación técnica, esquema SQL y manuales
 ├── lib/                 # Capa de base de datos, esquema, autenticación y utilidades
+├── public/              # Recursos estáticos públicos (fotografías en images/dishes/)
 ├── server/              # Aplicación Express, rutas REST y servidor de desarrollo local
 ├── src/                 # Aplicación web frontend (React + Vite + Tailwind)
 │   ├── components/      # Componentes reutilizables de interfaz

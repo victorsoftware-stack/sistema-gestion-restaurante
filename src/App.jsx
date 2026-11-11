@@ -22,7 +22,7 @@ function SigrShell() {
   const isStaff = user && (user.role === 'mesero' || user.role === 'administrador');
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-amber-50 via-yellow-50/70 to-orange-50/80">
       <Navbar activeTab={activeTab} onSelectTab={setActiveTab} />
 
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8">

@@ -1,9 +1,12 @@
 import express from 'express';
 import { initializeDatabase } from '../lib/db.js';
 import authRouter from './routes/auth.js';
+import cashClosingRouter from './routes/cashClosing.js';
 import categoriesRouter from './routes/categories.js';
 import dishesRouter from './routes/dishes.js';
+import invoicesRouter from './routes/invoices.js';
 import ordersRouter from './routes/orders.js';
+import reportsRouter from './routes/reports.js';
 import reservationsRouter from './routes/reservations.js';
 import tablesRouter from './routes/tables.js';
 
@@ -38,6 +41,9 @@ export function createApp() {
   app.use('/api/tables', tablesRouter);
   app.use('/api/orders', ordersRouter);
   app.use('/api/reservations', reservationsRouter);
+  app.use('/api/invoices', invoicesRouter);
+  app.use('/api/cash-closing', cashClosingRouter);
+  app.use('/api/reports', reportsRouter);
 
   app.use('/api', (_req, res) => {
     res.status(404).json({ error: 'Ruta de API no encontrada.' });
